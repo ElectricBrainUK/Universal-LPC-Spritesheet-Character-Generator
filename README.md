@@ -3,9 +3,11 @@ Universal LPC Spritesheet Character Generator
 
 Based on [Universal LPC Spritesheet](https://github.com/jrconway3/Universal-LPC-spritesheet).
 
-Try it out [here](https://sanderfrenken.github.io/Universal-LPC-Spritesheet-Character-Generator/).
+Which was extended by Sanderfrenken [here](https://github.com/sanderfrenken/Universal-LPC-Spritesheet-Character-Generator).
 
-The project you are looking now is an expansion on the above mentioned projects. I try to include all LPC created art up to now.
+The project you are looking now is an expansion on the above mentioned projects.
+I have re arranged the files provided by Sanderfrenken so that my code can process by directory, adding an image in the relevant directory is all that is needed now! It also allows for random character generation.
+I also re wrote the code in react, meaning it can be added directly into a react project (I have a phaser 3 app that now has randomly generated characters which I will share soon)
 
 The Liberated Pixel Effort is a collaborative effort from a number of different great artists who helped produce sprites for the project.
 Please read the [authors](AUTHORS.txt) file for the full list of authors who have contributed to the spritesheet.
@@ -27,24 +29,16 @@ GNU GPL 3.0:
 
 ### Run
 
-To run this project, just clone the repo and open ``index.html`` in your browser of choice.
+To run this project, just clone the repo and run ``npm i`` followed by ``npm run start``
+In order to use the code I include this component in a project with a React reference and set the class to a variable that can toggle its visibility (starting invisible).
+I then call creatorRef.generateRandom(type, include, exclude) all of the arguments are optional, the type can be male, female, undead, child or pregnant (if blank one will be chosen at random) then include and exclude are arrays of strings to force the inclusion or exclusion of directory names (anything left out will be random).
+Then I have a timeout to check the status of creatorRef.imageReady, once it is ready I call creatorRef.getImage() which returns the image, and some details about the type of image (oversized, slash/ thrust etc.) which I then import into my game.
 
 ### Caution
 
 This is not an example of a perfectly coded project, and it does have bugs.
-In my current project I am using the generator to create a vast amount of awesome different characters, and the results are beautiful.
 
-Still, feel free to enhance the code where you like, but for now, I focus on just adding content.
-
-### Status
-
-Support still working on:
-
-- [Teens](https://opengameart.org/content/lpc-teen-unisex-base-clothes)
-- [Triumph](https://opengameart.org/content/lpc-major-triumph)
-- [Skorpios](https://opengameart.org/content/lpc-skorpios-scifi-sprite-pack)
-
-### Examples
-![alt text](https://github.com/sanderfrenken/Universal-LPC-Spritesheet-Character-Generator/blob/master/ex1.png)
-![alt text](https://github.com/sanderfrenken/Universal-LPC-Spritesheet-Character-Generator/blob/master/ex2.png)
-![alt text](https://github.com/sanderfrenken/Universal-LPC-Spritesheet-Character-Generator/blob/master/ex3.png)
+### Support
+Please join our discord server for help and if you feel like this has been of a big benefit please feel free to donate as we do all of our work in our spare time!
+https://discord.gg/Qa3Bjr9
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=9EC6MMLG7KLNA&source=url)

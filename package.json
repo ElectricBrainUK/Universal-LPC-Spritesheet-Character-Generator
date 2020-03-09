@@ -1,0 +1,70 @@
+{
+  "name": "ioniser",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "@capacitor/android": "^1.5.0",
+    "@capacitor/core": "1.5.0",
+    "@capacitor/ios": "^1.5.0",
+    "@ion-phaser/react": "^1.2.1",
+    "@ionic/react": "^5.0.0",
+    "@ionic/react-router": "^5.0.0",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.4.0",
+    "@testing-library/user-event": "^8.0.3",
+    "@types/jest": "^24.0.25",
+    "@types/node": "^12.12.24",
+    "@types/react": "^16.9.17",
+    "@types/react-dom": "^16.9.4",
+    "@types/react-router": "^5.1.4",
+    "@types/react-router-dom": "^5.1.3",
+    "dungeoneer": "^2.1.4",
+    "ionicons": "^5.0.0",
+    "mrpas": "^2.0.0",
+    "phaser": "latest",
+    "phaser-ce": "^2.14.0",
+    "react": "^16.12.0",
+    "react-dom": "^16.12.0",
+    "react-redux": "^7.2.0",
+    "react-router": "^5.1.2",
+    "react-router-dom": "^5.1.2",
+    "react-scripts": "3.4.0",
+    "redux": "^4.0.5",
+    "redux-devtools-extension": "latest",
+    "remote-redux-devtools": "latest",
+    "typescript": "3.7.4"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
+  },
+  "config": {
+    "ionic_webpack": "./webpack.config.js"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "description": "An Ionic project",
+  "devDependencies": {
+    "@capacitor/cli": "1.5.0",
+    "@types/react-redux": "^7.1.7",
+    "@types/remote-redux-devtools": "^0.5.4",
+    "@types/webpack-env": "^1.15.1",
+    "file-loader": "^5.1.0"
+  },
+  "homepage": "./"
+}

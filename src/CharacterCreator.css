@@ -1,0 +1,20 @@
+.hidden {
+    display: none;
+}
+
+.layer {
+    /*position:  fixed;*/
+    position:  absolute;
+    top: 0px;
+    left: 175px;
+    /*width: 100%;*/
+    /*height: 100%;*/
+}
+
+ion-list {
+    max-width: 175px;
+}
+
+ion-content {
+    display: contents;
+}
