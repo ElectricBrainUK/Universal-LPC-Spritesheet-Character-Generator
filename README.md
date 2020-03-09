@@ -30,6 +30,7 @@ GNU GPL 3.0:
 ### Run
 
 To run this project, just clone the repo and run ``npm i`` followed by ``npm run start``
+
 In order to use the code I include this component in a project with a React reference and set the class to a variable that can toggle its visibility (starting invisible).
 I then call creatorRef.generateRandom(type, include, exclude) all of the arguments are optional, the type can be male, female, undead, child or pregnant (if blank one will be chosen at random) then include and exclude are arrays of strings to force the inclusion or exclusion of directory names (anything left out will be random).
 Then I have a timeout to check the status of creatorRef.imageReady, once it is ready I call creatorRef.getImage() which returns the image, and some details about the type of image (oversized, slash/ thrust etc.) which I then import into my game.
