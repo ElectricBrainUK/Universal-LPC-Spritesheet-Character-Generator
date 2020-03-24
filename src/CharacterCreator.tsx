@@ -163,8 +163,14 @@ class CharacterCreator extends Component<Props, State> {
         const images = this.spriteFiles.filter(file => {
             return file.includes(path)
         });
-        while (!layers.bodyType) {
-            layers.bodyType = this.sprites(images[Math.floor(Math.random() * images.length)]).default || this.sprites(images[Math.floor(Math.random() * images.length)]);
+        while (!layers.bodyType && images.length > 0) {
+            try {
+                let imageNumber = Math.floor(Math.random() * images.length);
+                layers.bodyType = this.sprites(images[imageNumber]).default || this.sprites(images[imageNumber]);
+            } catch (e) {
+                console.log(e);
+                break;
+            }
         }
 
         let oversized = false;
@@ -206,6 +212,7 @@ class CharacterCreator extends Component<Props, State> {
             layers.torso = [];
         }
         this.awaiting = Object.keys(layers).length;
+        // @ts-ignore
         this.setState({
             bodyType,
             layers,

@@ -4,16 +4,12 @@ import * as serviceWorker from './serviceWorker';
 import CharacterCreator from "./CharacterCreator";
 import {IonApp, IonPage, IonRouterOutlet} from "@ionic/react";
 import {IonReactRouter} from "@ionic/react-router";
-import {Redirect, Route} from "react-router-dom";
 
 ReactDOM.render(
     <IonApp>
         <IonReactRouter>
             <IonRouterOutlet id="main">
-                <Route path="/create" render={(props) => {
-                    return <IonPage><CharacterCreator/></IonPage>;
-                }} exact={true}/>
-                <Route path="/" render={() => <Redirect to="/create"/>} exact={true}/>
+                <IonPage><CharacterCreator/></IonPage>
             </IonRouterOutlet>
         </IonReactRouter>
     </IonApp>
