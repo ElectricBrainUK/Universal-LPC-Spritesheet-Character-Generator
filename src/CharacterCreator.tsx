@@ -149,11 +149,25 @@ class CharacterCreator extends Component<Props, State> {
         }
     }
 
-    getCredit(item: any) {
+    async getCredit(item: any) {
         try {
-            return (require(item.replace(".png", ".credit").replace("./", "https://raw.githubusercontent.com/ElectricBrainUK/Universal-LPC-Spritesheet-Character-Generator/master/src/spritesheets/")));
+            let url = item.replace(".png", ".credit");
+            console.log(url);
+            url = url.replace("./", "https://raw.githubusercontent.com/ElectricBrainUK/Universal-LPC-Spritesheet-Character-Generator/master/src/spritesheets/");
+
+            return await fetch(url).then(async res => {
+                return await res.text().then(res => {
+                    if (res.substring(0, 4) != "http") {
+                        return "uncredited";
+                    }
+                    return res.trim();
+                }).catch(err => {
+                    return "uncredited";
+                });
+            }).catch(err => {
+                return "uncredited";
+            });
         } catch (err) {
-            console.log(err);
             return "uncredited";
         }
     }
@@ -529,7 +543,7 @@ class CharacterCreator extends Component<Props, State> {
         return (
             <IonContent>
                 <IonList>
-                    <IonButton onClick={() => {
+                    <IonButton onClick={async () => {
                         let a = document.createElement('a');
                         a.download = "spritesheet.png";
                         a.href = this.canvas.current.toDataURL();
@@ -538,23 +552,35 @@ class CharacterCreator extends Component<Props, State> {
                         a.click();
                         document.body.removeChild(a);
 
-                        let creditDetails : any = {};
+                        let creditDetails: any = {};
 
-                        Object.keys(this.state.layers).forEach((key: any) => {
-                            console.log(key);
+                        for (let key of Object.keys(this.state.layers)) {
                             if (this.state.layers[key] !== "off") {
                                 if (key === "torso") {
                                     creditDetails[key] = [];
 
                                     for (let torsoItem = 0; torsoItem < this.state.layers[key].length; torsoItem++) {
-                                        creditDetails[key].push(this.getCredit(this.state.credits[key][torsoItem]));
+                                        let value = await this.getCredit(this.state.credits[key][torsoItem]);
+
+                                        if (value === "uncredited") {
+                                            creditDetails[key] += " " + this.state.credits[key][torsoItem].replace(".credit", ".png").replace("./", "https://raw.githubusercontent.com/ElectricBrainUK/Universal-LPC-Spritesheet-Character-Generator/master/src/spritesheets/");
+                                        }
+
+                                        try {
+                                            creditDetails[key].push(value);
+                                        } catch (err) {
+                                            console.log(err);
+                                        }
                                         torsoItem++;
                                     }
                                 } else {
-                                    creditDetails[key] = this.getCredit(this.state.credits[key])
+                                    creditDetails[key] = await this.getCredit(this.state.credits[key]);
+                                    if (creditDetails[key] === "uncredited") {
+                                        creditDetails[key] += " " + this.state.credits[key].replace(".credit", ".png").replace("./", "https://raw.githubusercontent.com/ElectricBrainUK/Universal-LPC-Spritesheet-Character-Generator/master/src/spritesheets/");
+                                    }
                                 }
                             }
-                        });
+                        }
 
                         let bl = new Blob([JSON.stringify(creditDetails)], {
                             type: "text/html"
