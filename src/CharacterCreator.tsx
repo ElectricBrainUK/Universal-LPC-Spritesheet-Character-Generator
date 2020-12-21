@@ -13,6 +13,7 @@ import {
     IonSelect,
     IonSelectOption
 } from "@ionic/react";
+import {image} from "ionicons/icons";
 
 interface Props {
 
@@ -30,6 +31,7 @@ interface State {
     oversizedSlash: boolean;
     slash: boolean;
     walkOnly: boolean;
+    credits: any;
 }
 
 class CharacterCreator extends Component<Props, State> {
@@ -64,7 +66,8 @@ class CharacterCreator extends Component<Props, State> {
             oversized: false,
             oversizedSlash: false,
             slash: false,
-            walkOnly: false
+            walkOnly: false,
+            credits: []
         };
         this.bodyTypeChanged = this.bodyTypeChanged.bind(this);
         this.bodyChanged = this.bodyChanged.bind(this);
@@ -86,6 +89,7 @@ class CharacterCreator extends Component<Props, State> {
     }
 
     componentDidUpdate(prevProps: Readonly<Props>, prevState: Readonly<State>, snapshot?: any): void {
+        console.log(this.state.credits);
         this.redraw();
     }
 
@@ -145,6 +149,15 @@ class CharacterCreator extends Component<Props, State> {
         }
     }
 
+    getCredit(item: any) {
+        try {
+            return (require(item.replace(".png", ".credit").replace("./", "https://raw.githubusercontent.com/ElectricBrainUK/Universal-LPC-Spritesheet-Character-Generator/master/src/spritesheets/")));
+        } catch (err) {
+            console.log(err);
+            return "uncredited";
+        }
+    }
+
     generateRandom(bodyType?: string, forceInclude?: any, forceExclude?: any) {
         this.imageReady = false;
         const check = Math.random();
@@ -158,6 +171,7 @@ class CharacterCreator extends Component<Props, State> {
             forceExclude = [];
         }
         let layers: any = {};
+        let credits: any = {};
 
         const path = './body/' + bodyType + "/";
         const images = this.spriteFiles.filter(file => {
@@ -167,6 +181,7 @@ class CharacterCreator extends Component<Props, State> {
             try {
                 let imageNumber = Math.floor(Math.random() * images.length);
                 layers.bodyType = this.sprites(images[imageNumber]).default || this.sprites(images[imageNumber]);
+                credits.bodyType = images[imageNumber].replace(".png", ".credit");
             } catch (e) {
                 console.log(e);
                 break;
@@ -185,6 +200,10 @@ class CharacterCreator extends Component<Props, State> {
             while (!item && forceInclude.includes(path) && files.length > 0) {
                 item = files[Math.floor(Math.random() * files.length)];
             }
+            if (item) {
+                credits[path] = item.replace(".png", ".credit");
+            }
+
             if ((Math.random() < 0.5 || forceInclude.includes(path)) && path !== "torso" && item && !forceExclude.includes(path)) {
                 layers[path] = this.sprites(item).default || this.sprites(item);
             }
@@ -200,6 +219,7 @@ class CharacterCreator extends Component<Props, State> {
                         oversizedSlash = item.toLowerCase().includes("slash");
                         oversized = true;
                         layers[path + "Universal"] = this.sprites(universalFile).default || this.sprites(universalFile) || "off"
+                        credits[path + "Universal"] = universalFile.replace(".png", ".credit");
                     } else {
                         oversizedSlash = item.toLowerCase().includes("slash");
                         oversized = true;
@@ -216,6 +236,7 @@ class CharacterCreator extends Component<Props, State> {
         this.setState({
             bodyType,
             layers,
+            credits,
             oversized,
             oversizedSlash,
             slash,
@@ -256,8 +277,12 @@ class CharacterCreator extends Component<Props, State> {
 
     torsoLayerChanged(layer: number, e: any) {
         let temp = this.state.layers.torso;
+        let tempCred = this.state.credits.torso;
         if (!temp) {
             temp = [];
+        }
+        if (!tempCred) {
+            tempCred = [];
         }
         if (!temp[layer]) {
             // @ts-ignore
@@ -269,11 +294,16 @@ class CharacterCreator extends Component<Props, State> {
         } else {
             // @ts-ignore
             temp[layer] = this.sprites(e.detail.value).default || this.sprites(e.detail.value);
+            tempCred[layer] = e.detail.value.replace(".png", ".credit");
         }
         this.setState({
             layers: {
                 ...this.state.layers,
                 torso: temp
+            },
+            credits: {
+                ...this.state.credits,
+                torso: tempCred
             }
         });
     }
@@ -284,6 +314,10 @@ class CharacterCreator extends Component<Props, State> {
             layers: {
                 ...this.state.layers,
                 bodyType: this.sprites(e.detail.value).default || this.sprites(e.detail.value)
+            },
+            credits: {
+                ...this.state.credits,
+                bodyType: e.detail.value.replace(".png", ".credit")
             }
         });
         let details = this.state.details;
@@ -367,6 +401,10 @@ class CharacterCreator extends Component<Props, State> {
                 layers: {
                     ...this.state.layers,
                     shadow: images.filter((image: any) => !image.includes("child"))[0]
+                },
+                credits: {
+                    ...this.state.credits,
+                    shadow: images.filter((image: any) => !image.includes("child"))[0].replace(".png", ".credit")
                 }
             });
         }
@@ -380,6 +418,10 @@ class CharacterCreator extends Component<Props, State> {
             layers: {
                 ...this.state.layers,
                 quiver: this.sprites('./behind_body/unisex/equipment/quiver.png').default || this.sprites(e.detail.value)
+            },
+            credits: {
+                ...this.state.credits,
+                quiver: './behind_body/unisex/equipment/quiver.credit'
             }
         });
     }
@@ -393,6 +435,10 @@ class CharacterCreator extends Component<Props, State> {
                 layers: {
                     ...this.state.layers,
                     bandage: this.sprites('./fullBody/' + this.state.bodyType + '/Bandage.png').default || this.sprites(e.detail.value)
+                },
+                credits: {
+                    ...this.state.credits,
+                    bandage: './fullBody/' + this.state.bodyType + '/Bandage.credit'
                 }
             });
         } catch (e) { //todo bug with male bandage
@@ -411,6 +457,11 @@ class CharacterCreator extends Component<Props, State> {
                     ...this.state.layers,
                     capeFront: this.sprites(e.detail.value).default || this.sprites(e.detail.value),
                     capeBack: this.sprites(backSprite).default || this.sprites(backSprite)
+                },
+                credits: {
+                    ...this.state.credits,
+                    capeFront: e.detail.value.replace(".png", ".credit"),
+                    capeBack: backSprite.replace(".png", ".credit")
                 }
             });
         } else {
@@ -419,6 +470,10 @@ class CharacterCreator extends Component<Props, State> {
                     ...this.state.layers,
                     capeFront: "off", //todo maybe do the same as men and make all capes universal with a back and a front
                     capeBack: this.sprites(e.detail.value).default || this.sprites(e.detail.value)
+                },
+                credits: {
+                    ...this.state.credits,
+                    capeBack: e.detail.value.replace(".png", ".credit")
                 }
             });
         }
@@ -437,6 +492,10 @@ class CharacterCreator extends Component<Props, State> {
                     layers: {
                         ...this.state.layers,
                         [name + "Universal"]: this.sprites(universalFile).default || this.sprites(universalFile) || "off"
+                    },
+                    credits: {
+                        ...this.state.credits,
+                        [name + "Universal"]: universalFile.replace(".png", ".credit")
                     }
                 });
             } else {
@@ -458,6 +517,10 @@ class CharacterCreator extends Component<Props, State> {
             layers: {
                 ...this.state.layers,
                 [name]: this.sprites(e.detail.value).default || this.sprites(e.detail.value)
+            },
+            credits: {
+                ...this.state.credits,
+                [name]: e.detail.value.replace(".png", ".credit")
             }
         });
     }
@@ -466,7 +529,53 @@ class CharacterCreator extends Component<Props, State> {
         return (
             <IonContent>
                 <IonList>
-                    <IonButton onClick={() => window.open(this.canvas.current.toDataURL())}>Save</IonButton>
+                    <IonButton onClick={() => {
+                        let a = document.createElement('a');
+                        a.download = "spritesheet.png";
+                        a.href = this.canvas.current.toDataURL();
+                        a.target = '_blank';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+
+                        let creditDetails : any = {};
+
+                        Object.keys(this.state.layers).forEach((key: any) => {
+                            console.log(key);
+                            if (this.state.layers[key] !== "off") {
+                                if (key === "torso") {
+                                    creditDetails[key] = [];
+
+                                    for (let torsoItem = 0; torsoItem < this.state.layers[key].length; torsoItem++) {
+                                        creditDetails[key].push(this.getCredit(this.state.credits[key][torsoItem]));
+                                        torsoItem++;
+                                    }
+                                } else {
+                                    creditDetails[key] = this.getCredit(this.state.credits[key])
+                                }
+                            }
+                        });
+
+                        let bl = new Blob([JSON.stringify(creditDetails)], {
+                            type: "text/html"
+                        });
+                        a = document.createElement("a");
+                        a.href = URL.createObjectURL(bl);
+                        a.download = "credits.json";
+                        a.hidden = true;
+                        document.body.appendChild(a);
+                        a.innerHTML = "someinnerhtml";
+                        a.click();
+                        document.body.removeChild(a);
+                    }}>Save</IonButton>
+                    <>
+                        <h4>Credits and Attribution</h4>
+                        It is incredibly important to credit any and all artwork you use in games or otherwise. Some
+                        items on this utility are not properly credited, any uncredited artwork will be downloaded
+                        seperately. I recommend you find the art on opengameart.org (you could reverse image search on
+                        google) to get the attribution and if possible raise a pull request to update the credits on
+                        this repo.
+                    </>
                     <IonButton onClick={() => this.generateRandom(undefined, ["arrow", "bow"])}>Generate
                         Random</IonButton>
                     <IonRadioGroup value={this.state.bodyType} onIonChange={this.bodyTypeChanged}>
