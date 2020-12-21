@@ -156,7 +156,7 @@ class CharacterCreator extends Component<Props, State> {
 
             return await fetch(url).then(async res => {
                 return await res.text().then(res => {
-                    if (res.substring(0, 4) != "http") {
+                    if (res.substring(0, 4) !== "http") {
                         return "uncredited";
                     }
                     return res.trim();
