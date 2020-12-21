@@ -13,7 +13,6 @@ import {
     IonSelect,
     IonSelectOption
 } from "@ionic/react";
-import {image} from "ionicons/icons";
 
 interface Props {
 
@@ -112,16 +111,16 @@ class CharacterCreator extends Component<Props, State> {
         });
         if (this.state.oversized && weaponLayer.image) {
             if (this.state.oversizedSlash) {
-                for (var i = 0; i < 6; ++i) {
-                    for (var j = 0; j < 4; ++j) {
-                        var imgData = ctx.getImageData(64 * i, 768 + 64 * j, 64, 64);
-                        ctx.putImageData(imgData, 64 + 192 * i, 1408 + 192 * j);
+                for (let i = 0; i < 6; ++i) {
+                    for (let j = 0; j < 4; ++j) {
+                        let imgDataOversized = ctx.getImageData(64 * i, 768 + 64 * j, 64, 64);
+                        ctx.putImageData(imgDataOversized, 64 + 192 * i, 1408 + 192 * j);
                     }
                 }
             } else {
-                for (var i = 0; i < 8; ++i) {
-                    for (var j = 0; j < 4; ++j) {
-                        var imgData = ctx.getImageData(64 * i, 256 + 64 * j, 64, 64);
+                for (let i = 0; i < 8; ++i) {
+                    for (let j = 0; j < 4; ++j) {
+                        let imgData = ctx.getImageData(64 * i, 256 + 64 * j, 64, 64);
                         ctx.putImageData(imgData, 64 + 192 * i, 1408 + 192 * j);
                     }
                 }

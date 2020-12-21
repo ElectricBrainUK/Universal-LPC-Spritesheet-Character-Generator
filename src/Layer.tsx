@@ -50,7 +50,7 @@ class Layer extends Component<params> {
     render() {
         return (
             <>
-                {this.props.image !== "off" ? <img ref={this.image} src={this.props.image}
+                {this.props.image !== "off" ? <img ref={this.image} src={this.props.image} alt={""}
                                                    className="hidden"/> : ""}
             </>
         )
