@@ -597,8 +597,7 @@ class CharacterCreator extends Component<Props, State> {
                     <>
                         <h4>Credits and Attribution</h4>
                         It is incredibly important to credit any and all artwork you use in games or otherwise. Some
-                        items on this utility are not properly credited, any uncredited artwork will be downloaded
-                        seperately. I recommend you find the art on opengameart.org (you could reverse image search on
+                        items on this utility are not properly credited, any uncredited artwork will be listed. I recommend you find the art on opengameart.org (you could reverse image search on
                         google) to get the attribution and if possible raise a pull request to update the credits on
                         this repo.
                     </>
