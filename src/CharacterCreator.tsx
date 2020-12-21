@@ -587,7 +587,7 @@ class CharacterCreator extends Component<Props, State> {
                         });
                         a = document.createElement("a");
                         a.href = URL.createObjectURL(bl);
-                        a.download = "credits.json";
+                        a.download = "credits.txt";
                         a.hidden = true;
                         document.body.appendChild(a);
                         a.innerHTML = "someinnerhtml";
